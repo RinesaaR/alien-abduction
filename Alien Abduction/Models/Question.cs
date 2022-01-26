@@ -7,13 +7,15 @@ using System.Threading.Tasks;
 
 namespace Alien_Abduction.Models
 {
-    public class Quiz
+    public class Question
     {
         [BsonId]
+
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
-        public string QuizName { get; set; }
-        public bool Upload { get; set; }
-        public string Owner { get; set; }
+        public string QuizId { get; set; }
+        public string QuestionText{ get; set; }
+        public string Answer { get; set; }
+        public BsonArray Options { get; set; }
     }
 }
