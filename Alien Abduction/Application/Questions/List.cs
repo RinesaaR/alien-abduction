@@ -22,7 +22,6 @@ namespace Application.Questions
                 this.context = context;
             }
 
-            public ILogger<List> Logger { get; }
 
             public async Task<List<Question>> Handle(Query request, CancellationToken cancellationToken)
             {

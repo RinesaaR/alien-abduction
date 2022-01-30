@@ -12,5 +12,9 @@ namespace Domain
         public string QuestionText { get; set; }
         public string Answer { get; set; }
         public string Option { get; set; }
+        public string QuiziId { get; set; }
+        public Quiz Quiz { get; set; }
+
+
     }
 }

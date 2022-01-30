@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DatabaseLogic.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220130105012_QuestionMigration")]
-    partial class QuestionMigration
+    [Migration("20220130140142_Question")]
+    partial class Question
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -33,7 +33,15 @@ namespace DatabaseLogic.Migrations
                     b.Property<string>("QuestionText")
                         .HasColumnType("TEXT");
 
+                    b.Property<Guid?>("QuizId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("QuiziId")
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("QuizId");
 
                     b.ToTable("Questions");
                 });
@@ -56,6 +64,20 @@ namespace DatabaseLogic.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Quizzes");
+                });
+
+            modelBuilder.Entity("Domain.Question", b =>
+                {
+                    b.HasOne("Domain.Quiz", "Quiz")
+                        .WithMany("Questions")
+                        .HasForeignKey("QuizId");
+
+                    b.Navigation("Quiz");
+                });
+
+            modelBuilder.Entity("Domain.Quiz", b =>
+                {
+                    b.Navigation("Questions");
                 });
 #pragma warning restore 612, 618
         }

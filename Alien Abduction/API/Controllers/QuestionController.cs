@@ -20,7 +20,7 @@ namespace API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Question>> GetQuestion(Guid id)
         {
-            return Ok();
+            return Ok(await Mediator.Send(new Details.Query{Id = id}));
         }
 
         [HttpPost]

@@ -22,7 +22,6 @@ namespace Application.Quizzes
                 this.context = context;
             }
 
-            public ILogger<List> Logger { get; }
 
             public async Task<List<Quiz>> Handle(Query request, CancellationToken cancellationToken)
             {

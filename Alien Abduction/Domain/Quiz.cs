@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Domain
 {
@@ -8,6 +9,7 @@ namespace Domain
         public string QuizName { get; set; }
         public int Timer { get; set; }
         public string Owner { get; set; }
+        public ICollection<Question> Questions { get; set; } = new List<Question>();
 
     }
 }

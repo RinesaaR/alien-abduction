@@ -31,7 +31,15 @@ namespace DatabaseLogic.Migrations
                     b.Property<string>("QuestionText")
                         .HasColumnType("TEXT");
 
+                    b.Property<Guid?>("QuizId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("QuiziId")
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("QuizId");
 
                     b.ToTable("Questions");
                 });
@@ -54,6 +62,20 @@ namespace DatabaseLogic.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Quizzes");
+                });
+
+            modelBuilder.Entity("Domain.Question", b =>
+                {
+                    b.HasOne("Domain.Quiz", "Quiz")
+                        .WithMany("Questions")
+                        .HasForeignKey("QuizId");
+
+                    b.Navigation("Quiz");
+                });
+
+            modelBuilder.Entity("Domain.Quiz", b =>
+                {
+                    b.Navigation("Questions");
                 });
 #pragma warning restore 612, 618
         }
