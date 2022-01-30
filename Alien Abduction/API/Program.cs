@@ -25,6 +25,7 @@ namespace API
                 var context = services.GetRequiredService<DataContext>();
                 await context.Database.MigrateAsync();
                 await SeedQuiz.SeedData(context);
+                await SeedQuestion.SeedData(context);
             }
             catch (Exception ex)
             {

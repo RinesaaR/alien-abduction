@@ -8,6 +8,7 @@ namespace Application.Core
         public MappingProfiles()
         {
             CreateMap<Quiz, Quiz>();
+            CreateMap<Question, Question>();
         }
     }
 }
