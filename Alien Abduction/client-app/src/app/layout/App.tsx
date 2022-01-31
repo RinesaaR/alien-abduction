@@ -1,20 +1,26 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import { Container } from 'semantic-ui-react';
 import { Quiz } from '../models/quiz';
 import NavBar from './NavBar';
 import QuizDashboard from '../../features/quizzes/dashboard/QuizDashboard';
 import {v4 as uuid} from 'uuid';
+import agent from '../api/agent';
 
 
 function App() {
   const [quizzes, setQuiz] = useState<Quiz[]>([]);
   const [selectedQuiz, setSelectedQuiz] = useState<Quiz | undefined>(undefined);
   const [editMode, setEditMode] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
-    axios.get<Quiz[]>('http://localhost:5000/api/quiz').then(response => {
-      setQuiz(response.data);
+    agent.Quizzes.list().then(response => {
+      let quizzes: Quiz[] = [];
+      response.forEach(quiz => {
+        quiz.quizName = quiz.quizName;
+        quizzes.push(quiz);
+      })
+      setQuiz(quizzes);
     })
   }, [])
 
@@ -36,15 +42,32 @@ function App() {
   }
 
   function handleCreateOrEditQuiz(quiz: Quiz) {
-    quiz.id 
-      ? setQuiz([...quizzes.filter(x => x.id !== quiz.id), quiz])
-      : setQuiz([...quizzes, {...quiz, id: uuid()}]);
-    setEditMode(false);
-    setSelectedQuiz(quiz);
+    setSubmitting(true);
+    if (quiz.id) {
+      agent.Quizzes.update(quiz).then(() => {
+        setQuiz([...quizzes.filter(x => x.id !== quiz.id), quiz])
+        setSelectedQuiz(quiz);
+        setEditMode(false);
+        setSubmitting(false);
+      })
+    } else {
+      quiz.id = uuid();
+      agent.Quizzes.create(quiz).then(() => {
+        setQuiz([...quizzes, quiz])
+        setSelectedQuiz(quiz);
+        setEditMode(false);
+        setSubmitting(false);
+      })
+    }
   }
 
   function handleDeleteQuiz(id: string) {
-    setQuiz([...quizzes.filter(x => x.id !== id)])
+    setSubmitting(true);
+    agent.Quizzes.delete(id).then(() => {
+      setQuiz([...quizzes.filter(x => x.id !== id)]);
+      setSubmitting(false);
+    })
+
   }
 
   return (
@@ -61,6 +84,7 @@ function App() {
           closeForm={handleFormClose}
           createOrEdit={handleCreateOrEditQuiz}
           deleteQuiz={handleDeleteQuiz}
+          submitting={submitting}
         />
       </Container>
 

@@ -15,16 +15,19 @@ interface Props {
     closeForm: () => void;
     createOrEdit: (quiz: Quiz) => void;
     deleteQuiz: (id: string) => void;
+    submitting: boolean;
 }
 
 export default function QuizDashboard({quizzes, selectedQuiz, deleteQuiz,
-        selectQuiz, cancelSelectQuiz, editMode, openForm, closeForm, createOrEdit}: Props) {
+    selectQuiz, cancelSelectQuiz, editMode, openForm, 
+    closeForm, createOrEdit, submitting}: Props) {
     return (
         <Grid>
             <Grid.Column width='10'>
                 <QuizList quizzes={quizzes} 
                     selectQuiz={selectQuiz} 
                     deleteQuiz={deleteQuiz}
+                    submitting={submitting}
                 />
             </Grid.Column>
             <Grid.Column width='6'>
@@ -35,7 +38,12 @@ export default function QuizDashboard({quizzes, selectedQuiz, deleteQuiz,
                     openForm={openForm} 
                 />}
                 {editMode &&
-                <QuizForm closeForm={closeForm} quiz={selectedQuiz} createOrEdit={createOrEdit} />}
+                <QuizForm 
+                closeForm={closeForm} 
+                quiz={selectedQuiz} 
+                createOrEdit={createOrEdit} 
+                submitting={submitting}
+                />}
             </Grid.Column>
         </Grid>
     )

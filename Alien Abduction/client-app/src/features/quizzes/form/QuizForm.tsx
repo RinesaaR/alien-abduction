@@ -6,9 +6,10 @@ interface Props {
     quiz: Quiz | undefined;
     closeForm: () => void;
     createOrEdit: (quiz: Quiz) => void;
+    submitting: boolean;
 }
 
-export default function QuizForm({quiz: selectedQuiz, closeForm, createOrEdit}: Props){
+export default function QuizForm({quiz: selectedQuiz, closeForm, createOrEdit, submitting}: Props) {
 
     const initialState = selectedQuiz ?? {
         id: '',
@@ -33,7 +34,7 @@ export default function QuizForm({quiz: selectedQuiz, closeForm, createOrEdit}: 
             <Form.Input placeholder='Quiz Name' value={quiz.quizName} name='quizName' onChange={handleInputChange} />
                 <Form.TextArea placeholder='Timer' value={quiz.timer} name='timer' onChange={handleInputChange} />
                 <Form.Input placeholder='Owner' value={quiz.owner} name='owner' onChange={handleInputChange} />
-                <Button floated='right' positive type='submit' content='Submit' />
+                <Button loading={submitting} floated='right' positive type='submit' content='Submit' />
                 <Button onClick={closeForm} floated='right' type='button' content='Cancel' />
             </Form>
         </Segment>
