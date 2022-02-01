@@ -13,7 +13,7 @@ export default observer(function QuestionForm() {
     const initialState = selectedQuestion ?? {
         id:'',
         questionText:'',
-        answer: 0,
+        answer: '',
         option: '',
         quiziId: ''
     }

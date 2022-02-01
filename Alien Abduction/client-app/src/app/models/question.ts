@@ -1,7 +1,7 @@
 export interface Question {
     id: string,
     questionText: string,
-    answer: number,
+    answer: string,
     option: string
     quiziId : string;
 }

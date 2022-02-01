@@ -6,8 +6,9 @@ import QuestionList from '../../questions/dashboard/QuestionList';
 import QuestionForm from '../../questions/form/QuestionForm';
 
 export default observer(function QuizList() {
-    const {quizStore} = useStore();
+    const {quizStore, questionStore} = useStore();
     const {deleteQuiz, quizzesByQuizName, loading} = quizStore;
+    const {selectedQuestion} = questionStore;
 
     const [target, setTarget] = useState('');
 
@@ -28,7 +29,6 @@ export default observer(function QuizList() {
                             </Item.Description>
                             <Item.Extra>
                             <Button onClick={() => quizStore.selectQuiz(quiz.id)} floated='right' content='View' color='blue' />
-                            <Button postion= "right" onClick= {() => (<QuestionList/>)} basic color='grey' content='Show Questions' />
                             <Button 
                                     name={quiz.id}
                                     loading={loading && target === quiz.id} 

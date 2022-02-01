@@ -1,9 +1,14 @@
 import { observer } from 'mobx-react-lite';
 import React, { SyntheticEvent, useState } from 'react';
+import { Id } from 'react-toastify';
 import { Button, Item, Label, Segment } from 'semantic-ui-react';
+import { Quiz } from '../../../app/models/quiz';
 import { useStore } from '../../../app/stores/store';
 
-export default observer(function QuestionList() {
+interface Props {
+    quiz: Quiz | undefined;
+}
+export default observer(function QuestionList({quiz} : Props) {
     const {questionStore} = useStore();
     const {deleteQuestion, questionsByQuestionText, loading} = questionStore;
 
@@ -14,9 +19,10 @@ export default observer(function QuestionList() {
         deleteQuestion(id);
     }
     return (
-        <Segment >
+        < >
             <Item.Group divided>
-                {questionsByQuestionText.map(question => (
+                {questionsByQuestionText.map(question => {
+                    {question.quiziId=== quiz?.id ? (
                     <Item key = {question.id}>
                         <Item.Content>
                             <Item.Header as='a'>{question.questionText}</Item.Header>
@@ -38,10 +44,17 @@ export default observer(function QuestionList() {
                                 />
                             </Item.Extra>
                         </Item.Content>
-                    </Item>
-                ))}
+                        </Item>
+                    ) : (console.log(question.quiziId + " ---------------- "+quiz?.id))}
+                    
+                    // if(question.quiziId === quiz?.id){
+                    //     console.log(question.id);
+                    // <Item key = {(question.id)}>
+                        
+                    
+                    })}
 
             </Item.Group>
-        </Segment>
+        </>
     )
 })

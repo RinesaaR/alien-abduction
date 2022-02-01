@@ -1,12 +1,18 @@
 import { observer } from 'mobx-react-lite';
-import React from 'react';
+import React, { useState } from 'react';
 import { Button, Card, Image } from 'semantic-ui-react';
+import QuizStore from '../../../app/stores/quizStore';
 import { store, useStore } from '../../../app/stores/store';
+import QuestionDashboard from '../../questions/dashboard/QuestionDashboard';
+import QuestionList from '../../questions/dashboard/QuestionList';
 import QuestionForm from '../../questions/form/QuestionForm';
+
 
 export default observer(function QuizDetails() {
     const {quizStore} = useStore();
     const {selectedQuiz: quiz, openForm, cancelSelectedQuiz} = quizStore;
+    const [state, setState] = useState(false);
+    
 
     return (
         <Card fluid>
@@ -19,9 +25,12 @@ export default observer(function QuizDetails() {
             <Card.Content extra >
                 <Button.Group width='2' style={{marginLeft: '2px'}}>
                 <Button onClick={() => openForm(quiz?.id)} basic color='blue' content='Edit' />
-                    <Button onClick={cancelSelectedQuiz} basic color='grey' content='Cancel' />  
-                </Button.Group>
-                
+                    <Button onClick={cancelSelectedQuiz} basic color='grey' content='Cancel' />
+                    <Button onClick={()=> {setState(!state)}} content='Show Questions'/>
+                    {state && <QuestionDashboard/>}
+                    {/* <Button postion= "right" onClick= {() =><QuestionList quiz={quizStore.getQuiz(quizStore.quizId!)!}/>} basic color='grey' content='Show Questions' /> */}
+                    {/* <Button postion= "right" onClick= {()=>console.log(quizStore.getQuiz(quizStore.quizId!)!)} basic color='grey' content='Show Questions' />  */}
+                </Button.Group>    
             </Card.Content>
         </Card>
     )

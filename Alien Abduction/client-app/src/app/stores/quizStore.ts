@@ -16,6 +16,10 @@ export default class QuizStore {
     get quizId() {
         return this.selectedQuiz?.id;
     }
+
+    public getQuiz = (id: string) => {
+        return this.quizRegistry.get(id);
+    }
     get quizzesByQuizName() {
         return Array.from(this.quizRegistry.values()).sort((a, b) => (a.quizName.localeCompare(b.quizName))
         )

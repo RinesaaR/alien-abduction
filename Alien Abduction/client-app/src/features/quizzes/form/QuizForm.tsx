@@ -1,12 +1,14 @@
 import { observer } from 'mobx-react-lite';
 import React, { ChangeEvent, useState } from 'react';
 import { Button, Form, Segment } from 'semantic-ui-react';
+import questionStore from '../../../app/stores/questionStore';
 import { useStore } from '../../../app/stores/store';
 import QuestionForm from '../../questions/form/QuestionForm';
 
 export default observer(function QuizForm() {
-    const {quizStore} = useStore();
-    const {selectedQuiz, closeForm, createQuiz, updateQuiz, loading} = quizStore;
+    const {quizStore, questionStore} = useStore();
+    const {selectedQuiz, closeForm, createQuiz, updateQuiz, loading, } = quizStore;
+    const {openFormQuestion} = questionStore;
 
     const initialState = selectedQuiz ?? {
         id:'',
@@ -19,6 +21,7 @@ export default observer(function QuizForm() {
 
     function handleSubmit() {
         quiz.id ? updateQuiz(quiz) : createQuiz(quiz);
+       
     }
 
     function handleInputChange(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
@@ -33,7 +36,8 @@ export default observer(function QuizForm() {
             <Form.Input placeholder='Quiz Name' value={quiz.quizName} name='quizName' onChange={handleInputChange} />
                 <Form.Input placeholder='Timer' value={quiz.timer} name='timer' onChange={handleInputChange} />
                 <Form.Input placeholder='Owner' value={quiz.owner} name='owner' onChange={handleInputChange} />
-                <Button onClick= {() => (<QuestionForm/>)} loading={loading} floated='right' positive type='button'  content='Submit' />
+                <Button onClick={() => handleSubmit()} loading={loading} floated='right' positive type='button'  content='Save Quiz' />
+                <Button onClick={() => questionStore.openFormQuestion()}loading={loading} floated='right' positive type='button'  content='Add Questions' />
                 <Button onClick={closeForm} floated='right' type='button' content='Cancel' />
             </Form>
         </Segment>
