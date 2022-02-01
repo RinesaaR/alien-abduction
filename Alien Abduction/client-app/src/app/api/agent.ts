@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 import { Quiz } from '../models/quiz';
+import { Question} from '../models/question';
 
 const sleep = (delay: number) => {
     return new Promise((resolve) => {
@@ -35,9 +36,17 @@ const Quizzes = {
     update: (quiz: Quiz) => axios.put<void>(`/quiz/${quiz.id}`, quiz),
     delete: (id: string) => axios.delete<void>(`/quiz/${id}`)
 }
+const Questions = {
+    list: () => requests.get<Question[]>('/question'),
+    details: (id: string) => requests.get<Question>(`/question/${id}`),
+    create: (question: Question) => requests.post<void>('/question', question),
+    update: (question: Question) => axios.put<void>(`/question/${question.id}`, question),
+    delete: (id: string) => axios.delete<void>(`/question/${id}`)
+}
 
 const agent = {
-    Quizzes
+    Quizzes,
+    Questions
 }
 
 export default agent;

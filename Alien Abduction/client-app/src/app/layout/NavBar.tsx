@@ -1,9 +1,11 @@
 import react from 'react';
 import { Button, Container, Menu } from 'semantic-ui-react';
+import questionStore from '../stores/questionStore';
 import { useStore } from '../stores/store';
 
 export default function NavBar() {
     const {quizStore} = useStore();
+    const {questionStore} = useStore();
     return (
         <Menu fixed='top'>
             <Container>
@@ -17,6 +19,7 @@ export default function NavBar() {
                 
                 <Menu.Item position='right'>
                     <Button onClick={() => quizStore.openForm()} positive content='Create Quiz' />
+                    <Button onClick={() => questionStore.openFormQuestion()} positive content='Create Quiz' />
                 </Menu.Item>
             </Container>
         </Menu>

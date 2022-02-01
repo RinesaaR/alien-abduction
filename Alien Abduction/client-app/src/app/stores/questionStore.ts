@@ -1,11 +1,11 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import agent from "../api/agent";
-import { Quiz } from "../models/quiz";
+import { Question } from "../models/question";
 import { v4 as uuid } from 'uuid';
 
-export default class QuizStore {
-    quizRegistry = new Map<string, Quiz>();
-    selectedQuiz: Quiz | undefined = undefined;
+export default class QuestionStore {
+    questionRegistry = new Map<string, Question>();
+    selectedQuestion: Question | undefined = undefined;
     editMode = false;
     loading = false;
     loadingInitial = true;
@@ -13,20 +13,18 @@ export default class QuizStore {
     constructor() {
         makeAutoObservable(this)
     }
-    get quizId() {
-        return this.selectedQuiz?.id;
-    }
-    get quizzesByQuizName() {
-        return Array.from(this.quizRegistry.values()).sort((a, b) => (a.quizName.localeCompare(b.quizName))
+
+    get questionsByQuestionText() {
+        return Array.from(this.questionRegistry.values()).sort((a, b) => (a.questionText.localeCompare(b.questionText))
         )
     }
 
-    loadQuizzes = async () => {
+    loadQuestions = async () => {
         try {
-            const quizzes = await agent.Quizzes.list();
-            quizzes.forEach(quiz => {
-                quiz.quizName = quiz.quizName;
-                this.quizRegistry.set(quiz.id, quiz);
+            const questions = await agent.Questions.list();
+            questions.forEach(question => {
+                question.questionText = question.questionText;
+                this.questionRegistry.set(question.id, question);
             })
             this.setLoadingInitial(false);
         } catch (error) {
@@ -35,21 +33,20 @@ export default class QuizStore {
         }
     }
     
-
     setLoadingInitial = (state: boolean) => {
         this.loadingInitial = state;
     }
 
-    selectQuiz = (id: string) => {
-        this.selectedQuiz= this.quizRegistry.get(id);
+    selectQuestion = (id: string) => {
+        this.selectedQuestion= this.questionRegistry.get(id);
     }
 
-    cancelSelectedQuiz = () => {
-        this.selectedQuiz = undefined;
+    cancelSelectedQuestion = () => {
+        this.selectedQuestion = undefined;
     }
 
-    openForm = (id?: string) => {
-        id ? this.selectQuiz(id) : this.cancelSelectedQuiz();
+    openFormQuestion = (id?: string) => {
+        id ? this.selectQuestion(id) : this.cancelSelectedQuestion();
         this.editMode = true;
     }
 
@@ -57,14 +54,14 @@ export default class QuizStore {
         this.editMode = false;
     }
 
-    createQuiz = async (quiz: Quiz) => {
+    createQuestion = async (question: Question) => {
         this.loading = true;
-        quiz.id = uuid();
+        question.id = uuid();
         try {
-            await agent.Quizzes.create(quiz);
+            await agent.Questions.create(question);
             runInAction(() => {
-                this.quizRegistry.set(quiz.id, quiz);
-                this.selectedQuiz = quiz;
+                this.questionRegistry.set(question.id, question);
+                this.selectedQuestion = question;
                 this.editMode = false;
                 this.loading = false;
             })
@@ -76,13 +73,13 @@ export default class QuizStore {
         }
     }
 
-    updateQuiz = async (quiz: Quiz) => {
+    updateQuestion = async (question: Question) => {
         this.loading = true;
         try {
-            await agent.Quizzes.update(quiz);
+            await agent.Questions.update(question);
             runInAction(() => {
-                this.quizRegistry.set(quiz.id, quiz);
-                this.selectedQuiz = quiz;
+                this.questionRegistry.set(question.id, question);
+                this.selectedQuestion = question;
                 this.editMode = false;
                 this.loading = false;
             })
@@ -94,13 +91,13 @@ export default class QuizStore {
         }
     }
 
-    deleteQuiz = async (id: string) => {
+    deleteQuestion = async (id: string) => {
         this.loading = true;
         try {
-            await agent.Quizzes.delete(id);
+            await agent.Questions.delete(id);
             runInAction(() => {
-                this.quizRegistry.delete(id);
-                if (this.selectedQuiz?.id === id) this.cancelSelectedQuiz();
+                this.questionRegistry.delete(id);
+                if (this.selectedQuestion?.id === id) this.cancelSelectedQuestion();
                 this.loading = false;
             })
         } catch (error) {

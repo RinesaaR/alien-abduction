@@ -1,11 +1,14 @@
 import { createContext, useContext } from "react";
+import QuestionStore from "./questionStore";
 import QuizStore from "./quizStore";
 
 interface Store {
-    quizStore: QuizStore
+    quizStore: QuizStore,
+    questionStore: QuestionStore
 }
 
 export const store: Store = {
+    questionStore: new QuestionStore(),
     quizStore: new QuizStore()
 }
 

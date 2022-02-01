@@ -1,7 +1,8 @@
 import { observer } from 'mobx-react-lite';
 import React from 'react';
 import { Button, Card, Image } from 'semantic-ui-react';
-import { useStore } from '../../../app/stores/store';
+import { store, useStore } from '../../../app/stores/store';
+import QuestionForm from '../../questions/form/QuestionForm';
 
 export default observer(function QuizDetails() {
     const {quizStore} = useStore();
@@ -18,8 +19,9 @@ export default observer(function QuizDetails() {
             <Card.Content extra >
                 <Button.Group width='2' style={{marginLeft: '2px'}}>
                 <Button onClick={() => openForm(quiz?.id)} basic color='blue' content='Edit' />
-                    <Button onClick={cancelSelectedQuiz} basic color='grey' content='Cancel' />
+                    <Button onClick={cancelSelectedQuiz} basic color='grey' content='Cancel' />  
                 </Button.Group>
+                
             </Card.Content>
         </Card>
     )
