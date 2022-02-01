@@ -1,50 +1,26 @@
+import { observer } from 'mobx-react-lite';
 import React from 'react';
 import { Grid } from 'semantic-ui-react';
-import { Quiz } from '../../../app/models/quiz';
+import { useStore } from '../../../app/stores/store';
 import QuizDetails from '../details/QuizDetails';
 import QuizForm from '../form/QuizForm';
 import QuizList from './QuizList';
 
-interface Props {
-    quizzes: Quiz[];
-    selectedQuiz: Quiz | undefined;
-    selectQuiz: (id: string) => void;
-    cancelSelectQuiz: () => void;
-    editMode: boolean;
-    openForm: (id: string) => void;
-    closeForm: () => void;
-    createOrEdit: (quiz: Quiz) => void;
-    deleteQuiz: (id: string) => void;
-    submitting: boolean;
-}
+export default observer(function QuizDashboard() {
 
-export default function QuizDashboard({quizzes, selectedQuiz, deleteQuiz,
-    selectQuiz, cancelSelectQuiz, editMode, openForm, 
-    closeForm, createOrEdit, submitting}: Props) {
+    const {quizStore} = useStore();
+    const {selectedQuiz, editMode} = quizStore;
     return (
         <Grid>
             <Grid.Column width='10'>
-                <QuizList quizzes={quizzes} 
-                    selectQuiz={selectQuiz} 
-                    deleteQuiz={deleteQuiz}
-                    submitting={submitting}
-                />
+                <QuizList />
             </Grid.Column>
             <Grid.Column width='6'>
                 {selectedQuiz && !editMode &&
-                <QuizDetails 
-                    quiz={selectedQuiz} 
-                    cancelSelectQuiz={cancelSelectQuiz}
-                    openForm={openForm} 
-                />}
+                <QuizDetails />}
                 {editMode &&
-                <QuizForm 
-                closeForm={closeForm} 
-                quiz={selectedQuiz} 
-                createOrEdit={createOrEdit} 
-                submitting={submitting}
-                />}
+                <QuizForm />}
             </Grid.Column>
         </Grid>
     )
-}
+})

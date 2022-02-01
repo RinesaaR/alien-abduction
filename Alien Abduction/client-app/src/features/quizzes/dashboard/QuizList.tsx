@@ -1,14 +1,12 @@
+import { observer } from 'mobx-react-lite';
 import React, { SyntheticEvent, useState } from 'react';
-import { Button, Item, Segment } from 'semantic-ui-react';
-import { Quiz } from '../../../app/models/quiz';
+import { Button, Item, Label, Segment } from 'semantic-ui-react';
+import { useStore } from '../../../app/stores/store';
 
-interface Props {
-    quizzes: Quiz[];
-    selectQuiz: (id: string) => void;
-    deleteQuiz: (id: string) => void;
-    submitting: boolean;
-}
-export default function QuizList({ quizzes, selectQuiz, deleteQuiz, submitting }: Props) {
+export default observer(function QuizList() {
+    const {quizStore} = useStore();
+    const {deleteQuiz, quizzesByQuizName, loading} = quizStore;
+
     const [target, setTarget] = useState('');
 
     function handleQuizDelete(e: SyntheticEvent<HTMLButtonElement>, id: string) {
@@ -18,7 +16,7 @@ export default function QuizList({ quizzes, selectQuiz, deleteQuiz, submitting }
     return (
         <Segment>
             <Item.Group divided>
-                {quizzes.map(quiz => (
+                {quizzesByQuizName.map(quiz => (
                     <Item key = {quiz.id}>
                         <Item.Content>
                             <Item.Header as='a'>{quiz.quizName}</Item.Header>
@@ -27,10 +25,10 @@ export default function QuizList({ quizzes, selectQuiz, deleteQuiz, submitting }
                                 <div>{quiz.timer}</div>
                             </Item.Description>
                             <Item.Extra>
-                            <Button onClick={() => selectQuiz(quiz.id)} floated='right' content='View' color='blue' />
+                            <Button onClick={() => quizStore.selectQuiz(quiz.id)} floated='right' content='View' color='blue' />
                             <Button 
                                     name={quiz.id}
-                                    loading={submitting && target === quiz.id} 
+                                    loading={loading && target === quiz.id} 
                                     onClick={(e) => handleQuizDelete(e, quiz.id)} 
                                     floated='right' 
                                     content='Delete' 
@@ -44,4 +42,4 @@ export default function QuizList({ quizzes, selectQuiz, deleteQuiz, submitting }
             </Item.Group>
         </Segment>
     )
-}
+})
