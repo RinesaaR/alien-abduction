@@ -19,7 +19,6 @@ export default function NavBar() {
                 
                 <Menu.Item position='right'>
                     <Button onClick={() => quizStore.openForm()} positive content='Create Quiz' />
-                    <Button onClick={() => questionStore.openFormQuestion()} positive content='Create Quiz' />
                 </Menu.Item>
             </Container>
         </Menu>

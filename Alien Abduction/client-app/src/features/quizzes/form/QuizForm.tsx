@@ -37,7 +37,7 @@ export default observer(function QuizForm() {
                 <Form.Input placeholder='Timer' value={quiz.timer} name='timer' onChange={handleInputChange} />
                 <Form.Input placeholder='Owner' value={quiz.owner} name='owner' onChange={handleInputChange} />
                 <Button onClick={() => handleSubmit()} loading={loading} floated='right' positive type='button'  content='Save Quiz' />
-                <Button onClick={() => questionStore.openFormQuestion()}loading={loading} floated='right' positive type='button'  content='Add Questions' />
+                <Button onClick={() => openFormQuestion()}loading={loading} floated='right' positive type='button'  content='Add Questions' />
                 <Button onClick={closeForm} floated='right' type='button' content='Cancel' />
             </Form>
         </Segment>

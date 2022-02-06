@@ -5,6 +5,7 @@ import QuizDashboard from '../../features/quizzes/dashboard/QuizDashboard';
 import { useStore } from '../stores/store';
 import { observer } from 'mobx-react-lite';
 import QuestionDashboard from '../../features/questions/dashboard/QuestionDashboard';
+import QuestionList from '../../features/questions/dashboard/QuestionList';
 
 function App() {
   const {quizStore} = useStore();
@@ -24,6 +25,7 @@ function App() {
       <Container style={{marginTop: '7em'}}>
         <QuizDashboard/>
         <QuestionDashboard/>
+        <QuestionList quiz={quizStore.selectedQuiz}/>
       </Container>
 
     </>
